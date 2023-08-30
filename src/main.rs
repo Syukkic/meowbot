@@ -1,3 +1,5 @@
+#![allow(non_snake_case)]
+
 use dotenv;
 use reqwest::header::HeaderValue;
 use serde::Serialize;
@@ -7,12 +9,12 @@ struct Content {
     i: String,
     visibility: String,
     text: String,
+    fileIds: Vec<String>,
 }
 
 #[tokio::main]
 async fn main() -> Result<(), Box<dyn std::error::Error>> {
     dotenv::dotenv().unwrap();
-
     let api_key = std::env::var("ACCESS_TOKEN").expect("Can't find Misskey TOKEN");
     let instance_url = std::env::var("INSTANCE_URL").expect("Can't find instance URL");
     let endpoint = format!("{}/api/notes/create", instance_url);
@@ -21,7 +23,8 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
     let post_data = Content {
         i: api_key,
         visibility: visibility,
-        text: "Test x2".to_string(),
+        text: "Test Pics x2".to_string(),
+        fileIds: vec!["9j11sg9h30".to_string(), "9j11sg9o31".to_string()],
     };
 
     let client = reqwest::Client::new();
